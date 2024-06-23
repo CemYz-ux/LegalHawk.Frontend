@@ -1,0 +1,116 @@
+<div class="container mx-auto">
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3">Title</th>
+          <th scope="col" class="px-6 py-3">Author</th>
+          <th scope="col" class="px-6 py-3">Description</th>
+          <th scope="col" class="px-6 py-3">Created At</th>
+          <th scope="col" class="px-6 py-3">Modified At</th>
+          <th scope="col" class="px-6 py-3"></th>
+          <th scope="col" class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (legalContract of legalContracts; let i =$index; track i; ) {
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ legalContract.title }}
+          </th>
+          <td class="px-6 py-4">{{ legalContract.author }}</td>
+          <td class="px-6 py-4">{{ legalContract.description }}</td>
+          <td class="px-6 py-4">
+            {{ legalContract.createdAt | date : "dd/MM/yyyy hh:mm:ss" }}
+          </td>
+          <td class="px-6 py-4">
+            {{ legalContract.modifiedAt | date : "dd/MM/yyyy hh:mm:ss" }}
+          </td>
+          <td class="px-6 py-4 text-right">
+            <button
+              type="button"
+              routerLink="/legal-contracts/{{ legalContract.id }}/edit"
+              mat-button
+            >
+              Edit
+            </button>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <button
+              type="button"
+              (click)="deleteLegalContract(legalContract)"
+              mat-button
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+        }
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            <button
+              type="button"
+              mat-button
+              routerLink="/legal-contracts/create"
+            >
+              Create New Legal Contract
+            </button>
+          </th>
+          <td
+            colspan="6"
+            class="px-6 py-4 text-center text-gray-500 dark:text-gray-400"
+          ></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700">
+      <!-- Help text -->
+      <span class="text-sm text-gray-700 dark:text-gray-400">
+        Showing Page
+        <span class="font-semibold text-gray-900 dark:text-white">
+          {{ this.page }}
+        </span>
+        of
+        <span class="font-semibold text-gray-900 dark:text-white">
+          {{ this.totalItems / this.pageSize | round : 0 : "up" }}</span
+        >
+        with total of
+        <span class="font-semibold text-gray-900 dark:text-white">{{
+          this.totalItems
+        }}</span>
+        Entries
+      </span>
+      <!-- Buttons -->
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button
+          type="button"
+          (click)="OnPrevious()"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          Prev
+        </button>
+        <button
+          type="button"
+          (click)="onNext()"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
