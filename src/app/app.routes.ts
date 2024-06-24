@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from '../shared/layouts/main-layout/main-layout.component';
-import { HomeComponent } from './home/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
   {
@@ -15,7 +15,7 @@ export const routes: Routes = [
       {
         path: 'legal-contracts',
         loadChildren: () =>
-          import('./legal-contracts/legal-contracts.module').then(
+          import('./components/legal-contracts/legal-contracts.module').then(
             (m) => m.LegalContractsModule
           ),
       },

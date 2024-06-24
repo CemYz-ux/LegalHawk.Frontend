@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LegalHawkBackendClientModule as LegalHawkApi } from '../../backend/Client/LegalHawkBackendClient';
-import { environment } from '../../../environments/environment';
+import { LegalHawkBackendClientModule as LegalHawkApi } from '../../../backend/Client/LegalHawkBackendClient';
+import { environment } from '../../../../environments/environment';
 import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LegalContractService } from '../../../shared/services/legalContractService';
+import { LegalContractService } from '../../../../shared/services/legalContractService';
 
 @Component({
   selector: 'legal-contract-form',

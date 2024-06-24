@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseComponent } from '../../shared/base/components/base-component';
+import { BaseComponent } from '../../../shared/base/components/base-component';
 
 @Component({
   selector: 'legal-contracts',
