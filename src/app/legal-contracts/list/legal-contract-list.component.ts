@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { RoundPipe } from '../../../shared/pipes/round.pipe';
+import { LegalContractService } from '../../../shared/services/legalContractService';
 
 @Component({
   selector: 'legal-contract-list',
@@ -18,6 +19,8 @@ export class LegalContractListComponent {
   pageSize = 5;
   page = 1;
   totalItems = 0;
+
+  constructor(private legalContractService: LegalContractService) {}
 
   ngOnInit(): void {
     this.getLegalContracts(this.page, this.pageSize);
@@ -40,35 +43,18 @@ export class LegalContractListComponent {
   }
 
   getLegalContracts(page: number, pageSize: number) {
-    const legalHawkBackendClient = new LegalHawkApi.LegalHawkBackendClient(
-      environment.backend_baseUrl
-    );
-
-    legalHawkBackendClient
-      .getLegalContracts(undefined, '-ModifiedAt', page, pageSize)
-      .then((result: LegalHawkApi.LegalContractListDtoOkListResponse) => {
-        this.legalContracts = result.data || [];
-        this.totalItems = result.totalCount || 0;
-      })
-      .catch((error: any) => {
-        console.error(error);
+    this.legalContractService
+      .getLegalContracts('-ModifiedAt', page, pageSize)
+      .then((legalContractsResponse) => {
+        this.legalContracts = legalContractsResponse.data || [];
+        this.totalItems = legalContractsResponse.totalCount || 0;
       });
   }
 
   deleteLegalContract(legalContract: LegalHawkApi.LegalContractListDto) {
-    const legalHawkBackendClient = new LegalHawkApi.LegalHawkBackendClient(
-      environment.backend_baseUrl
-    );
-
-    legalHawkBackendClient
-      .deleteLegalContractById(legalContract.id?.toString() || '0')
-      .then((response) => {
-        this.legalContracts = this.legalContracts.filter(
-          (c) => c.id !== legalContract.id
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (legalContract.id) {
+      this.legalContractService.deleteLegalContract(legalContract.id);
+      this.getLegalContracts(this.page, this.pageSize);
+    }
   }
 }

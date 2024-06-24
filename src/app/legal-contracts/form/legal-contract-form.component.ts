@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { LegalHawkBackendClientModule as LegalHawkApi } from '../../backend/Client/LegalHawkBackendClient';
 import { environment } from '../../../environments/environment';
@@ -6,6 +6,7 @@ import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LegalContractService } from '../../../shared/services/legalContractService';
 
 @Component({
   selector: 'legal-contract-form',
@@ -15,46 +16,42 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrl: './legal-contract-form.component.scss',
 })
 export class LegalContractFormComponent {
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  legalContract: LegalHawkApi.ILegalContractDetailDto = {
+    title: '',
+    author: '',
+    description: '',
+  };
+  legalContractId!: string | null;
 
-  ngOnInit(): void {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private legalContractService: LegalContractService
+  ) {}
+
+  ngOnInit(): void {
+    this.legalContractId = this.route.snapshot.paramMap.get('legalContractId');
+    if (this.legalContractId) {
+      this.legalContractService
+        .getLegalContractById(this.legalContractId)
+        .then((legalContract) => {
+          this.legalContract =
+            legalContract as LegalHawkApi.ILegalContractDetailDto;
+        });
+    }
+  }
 
   onSubmit(form: NgForm) {
-    const legalHawkBackendClient = new LegalHawkApi.LegalHawkBackendClient(
-      environment.backend_baseUrl
-    );
-
-    const legalContractCreateOptions: LegalHawkApi.LegalContractCreateOptions =
-      {
-        title: form.value.title,
-        author: form.value.author,
-        description: form.value.description,
-        init: function (_data?: any): void {
-          if (_data) {
-            this.author = _data['author'];
-            this.title = _data['title'];
-            this.description = _data['description'];
-          }
-        },
-        toJSON(data?: any) {
-          data = typeof data === 'object' ? data : {};
-          data['author'] = this.author;
-          data['title'] = this.title;
-          data['description'] = this.description;
-          return data;
-        },
-      };
-
-    legalHawkBackendClient
-      .createLegalConract(legalContractCreateOptions)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (this.legalContractId) {
+      this.legalContractService.updateLegalContract(
+        this.legalContractId,
+        this.legalContract
+      );
+    } else {
+      this.legalContractService.createLegalContract(this.legalContract);
+    }
 
     form.reset();
-    this.router.navigate(['/legal-contracts']);
+    this.router.navigate(['/legal-contracts'], { relativeTo: this.route });
   }
 }

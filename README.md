@@ -2,7 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.5.
 
+## Setup
+
+Run `npm install` in the root path of this project to install all required libraries, before starting the Development server.
+
 ## Development server
+
+Run `ng serve -o` for a dev server. This will automatically navigate you to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
