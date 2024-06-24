@@ -27,6 +27,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should create', () => {
-    chai.assert.exists(component);
+    expect(component).toBeTruthy();
   });
 });

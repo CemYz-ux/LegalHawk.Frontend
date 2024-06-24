@@ -27,6 +27,6 @@ describe('HomeComponent', () => {
   });
 
   it('should create', () => {
-    chai.assert.exists(component);
+    expect(component).toBeTruthy();
   });
 });

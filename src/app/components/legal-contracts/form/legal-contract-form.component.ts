@@ -29,10 +29,10 @@ export class LegalContractFormComponent {
     private legalContractService: LegalContractService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.legalContractId = this.route.snapshot.paramMap.get('legalContractId');
     if (this.legalContractId) {
-      this.legalContractService
+      await this.legalContractService
         .getLegalContractById(this.legalContractId)
         .then((legalContract) => {
           this.legalContract =
@@ -41,14 +41,14 @@ export class LegalContractFormComponent {
     }
   }
 
-  onSubmit(form: NgForm) {
+  async onSubmit(form: NgForm) {
     if (this.legalContractId) {
-      this.legalContractService.updateLegalContract(
+      await this.legalContractService.updateLegalContract(
         this.legalContractId,
         this.legalContract
       );
     } else {
-      this.legalContractService.createLegalContract(this.legalContract);
+      await this.legalContractService.createLegalContract(this.legalContract);
     }
 
     form.reset();

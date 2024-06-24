@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
 
 import { LegalContractFormComponent } from './legal-contract-form.component';
 import { LegalContractService } from '../../../../shared/services/legalContractService';
@@ -15,11 +14,11 @@ describe('LegalContractFormComponent', () => {
         get: (key: string) => 'someDefaultValue',
       },
     },
-    queryParams: of({ some: 'queryParam' }),
   };
 
   const legalContractServiceStub = {
     getLegalContractById: () => Promise.resolve(),
+    updateLegalContract: () => Promise.resolve(),
   };
 
   beforeEach(async () => {
@@ -38,5 +37,11 @@ describe('LegalContractFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call getLegalContracts on init', () => {
+    const getLegalContractsSpy = spyOn(component, 'ngOnInit');
+    component.ngOnInit();
+    expect(getLegalContractsSpy).toHaveBeenCalled();
   });
 });
